@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Evento.
+    -->
+    <changeSet id="20180704075042-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="ciudad_id"
+                                 baseTableName="evento"
+                                 constraintName="fk_evento_ciudad_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ciudad"/>
+
+        <addForeignKeyConstraint baseColumnNames="categoria_id"
+                                 baseTableName="evento"
+                                 constraintName="fk_evento_categoria_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="categoria"/>
+
+        <addForeignKeyConstraint baseColumnNames="estado_id"
+                                 baseTableName="evento"
+                                 constraintName="fk_evento_estado_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="estado"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="evento"
+                                 constraintName="fk_evento_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="eventos_id"
+                                 baseTableName="evento_tag"
+                                 constraintName="fk_evento_tag_eventos_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="evento"/>
+        <addForeignKeyConstraint baseColumnNames="tags_id"
+                                 baseTableName="evento_tag"
+                                 constraintName="fk_evento_tag_tags_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tag"/>
+        
+    </changeSet>
+</databaseChangeLog>

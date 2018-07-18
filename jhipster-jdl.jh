@@ -1,0 +1,64 @@
+entity Usuario {
+fechaNacimiento LocalDate
+}
+
+entity Evento {
+nombre String,
+resumen String,
+descripcion String,
+precio Integer,
+fechaHora ZonedDateTime,
+direccion String,
+imagen ImageBlob
+}
+
+entity Tag {
+nombre String
+}
+
+entity Categoria {
+nombre String
+}
+
+entity Ciudad {
+nombre String
+}
+
+entity Provincia {
+nombre String
+}
+
+entity Genero {
+nombre String
+}
+entity Estado {
+nombre String
+}
+
+relationship ManyToOne {
+	Ciudad{provincia} to Provincia,
+    Evento{ciudad} to Ciudad,
+    Evento{categoria} to Categoria,
+    Evento{estado} to Estado,
+    Categoria{estado} to Estado,
+    Tag{estado} to Estado,
+    Usuario{genero} to Genero,
+    Evento{user} to User
+}
+
+relationship OneToOne {
+	Usuario{user(id)} to User
+}
+
+relationship ManyToMany {
+	Usuario{evento(favorito)} to Evento,
+    Usuario{participa(participa)} to Evento,
+   	Tag{user} to User,
+    Evento{tag} to Tag{evento}
+}
+
+paginate Usuario, Evento, Ciudad, Provincia, Tag, Categoria with pagination
+
+
+
+
