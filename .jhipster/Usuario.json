@@ -1,0 +1,52 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "usuario"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "favorito",
+            "otherEntityName": "evento",
+            "otherEntityField": "favorito",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "participa",
+            "otherEntityName": "evento",
+            "otherEntityField": "participa",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "tags",
+            "otherEntityName": "tag",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "usuarios"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "fechaNacimiento",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "genero",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20180720000002",
+    "entityTableName": "usuario",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
+}

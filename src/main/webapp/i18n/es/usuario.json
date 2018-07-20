@@ -1,0 +1,27 @@
+
+{
+    "trievegoApp": {
+        "usuario" : {
+            "home": {
+                "title": "Usuarios",
+                "createLabel": "Crear nuevo Usuario",
+                "createOrEditLabel": "Crear o editar Usuario"
+            },
+            "created": "Un nuevo Usuario ha sido creado con el identificador {{ param }}",
+            "updated": "Un Usuario ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Usuario ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Usuario {{ id }}?"
+            },
+            "detail": {
+                "title": "Usuario"
+            },
+            "fechaNacimiento": "Fecha Nacimiento",
+            "genero": "Genero",
+            "user": "User",
+            "favorito": "Favorito",
+            "participa": "Participa",
+            "tags": "Tags"
+        }
+    }
+}

@@ -1,0 +1,32 @@
+
+<div *ngIf="ciudad">
+    <h2><span jhiTranslate="trievegoApp.ciudad.detail.title">Ciudad</span> {{ciudad.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="trievegoApp.ciudad.nombre">Nombre</span></dt>
+        <dd>
+            <span>{{ciudad.nombre}}</span>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.ciudad.provincias">Provincias</span></dt>
+        <dd>
+            <div *ngIf="ciudad.provincias">
+                <a [routerLink]="['/provincia', ciudad.provincias?.id]">{{ciudad.provincias?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'ciudad/'+ ciudad.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
