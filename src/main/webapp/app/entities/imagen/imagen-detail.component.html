@@ -1,0 +1,45 @@
+
+<div *ngIf="imagen">
+    <h2><span jhiTranslate="trievegoApp.imagen.detail.title">Imagen</span> {{imagen.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="trievegoApp.imagen.nombre">Nombre</span></dt>
+        <dd>
+            <span>{{imagen.nombre}}</span>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.imagen.imagen">Imagen</span></dt>
+        <dd>
+            <div *ngIf="imagen.imagen">
+                <a (click)="openFile(imagen.imagenContentType, imagen.imagen)">
+                    <img [src]="'data:' + imagen.imagenContentType + ';base64,' + imagen.imagen" style="max-width: 100%;" alt="imagen image"/>
+                </a>
+                {{imagen.imagenContentType}}, {{byteSize(imagen.imagen)}}
+            </div>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.imagen.fecha">Fecha</span></dt>
+        <dd>
+            <span>{{imagen.fecha | date:'mediumDate'}}</span>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.imagen.eventos">Eventos</span></dt>
+        <dd>
+            <div *ngIf="imagen.eventos">
+                <a [routerLink]="['/evento', imagen.eventos?.id]">{{imagen.eventos?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'imagen/'+ imagen.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

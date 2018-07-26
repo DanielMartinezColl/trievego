@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Usuario.
+    -->
+    <changeSet id="20180724000751-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="usuario"
+                                 constraintName="fk_usuario_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="usuarios_id"
+                                 baseTableName="usuario_favorito"
+                                 constraintName="fk_usuario_favorito_usuarios_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="usuario"/>
+        <addForeignKeyConstraint baseColumnNames="favoritos_id"
+                                 baseTableName="usuario_favorito"
+                                 constraintName="fk_usuario_favorito_favoritos_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="evento"/>
+        
+        <addForeignKeyConstraint baseColumnNames="usuarios_id"
+                                 baseTableName="usuario_participa"
+                                 constraintName="fk_usuario_participa_usuarios_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="usuario"/>
+        <addForeignKeyConstraint baseColumnNames="participas_id"
+                                 baseTableName="usuario_participa"
+                                 constraintName="fk_usuario_participa_participas_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="evento"/>
+        
+    </changeSet>
+</databaseChangeLog>

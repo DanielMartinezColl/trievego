@@ -1,0 +1,74 @@
+
+<div *ngIf="evento">
+    <h2><span jhiTranslate="trievegoApp.evento.detail.title">Evento</span> {{evento.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="trievegoApp.evento.nombre">Nombre</span></dt>
+        <dd>
+            <span>{{evento.nombre}}</span>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.evento.resumen">Resumen</span></dt>
+        <dd>
+            <span>{{evento.resumen}}</span>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.evento.descripcion">Descripcion</span></dt>
+        <dd>
+            <span>{{evento.descripcion}}</span>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.evento.precio">Precio</span></dt>
+        <dd>
+            <span>{{evento.precio}}</span>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.evento.fechaHora">Fecha Hora</span></dt>
+        <dd>
+            <span>{{evento.fechaHora | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.evento.direccion">Direccion</span></dt>
+        <dd>
+            <span>{{evento.direccion}}</span>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.evento.estado">Estado</span></dt>
+        <dd>
+            <span>{{evento.estado}}</span>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.evento.ciudades">Ciudades</span></dt>
+        <dd>
+            <div *ngIf="evento.ciudades">
+                <a [routerLink]="['/ciudad', evento.ciudades?.id]">{{evento.ciudades?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.evento.categorias">Categorias</span></dt>
+        <dd>
+            <div *ngIf="evento.categorias">
+                <a [routerLink]="['/categoria', evento.categorias?.id]">{{evento.categorias?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.evento.usuarios">Usuarios</span></dt>
+        <dd>
+            <div *ngIf="evento.usuarios">
+                <a [routerLink]="['/usuario', evento.usuarios?.id]">{{evento.usuarios?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="trievegoApp.evento.tags">Tags</span></dt>
+        <dd>
+            <span *ngFor="let tags of evento.tags; let last = last">
+                <a [routerLink]="['/tag', tags?.id ]">{{tags.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'evento/'+ evento.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
