@@ -92,4 +92,8 @@ public class UsuarioService {
         Page<Usuario> result = usuarioSearchRepository.search(queryStringQuery(query), pageable);
         return result;
     }
+
+   public Usuario findOneByUser_Id(Long id) {
+       return this.usuarioRepository.findOneByUser_Id(id);
+    };
 }

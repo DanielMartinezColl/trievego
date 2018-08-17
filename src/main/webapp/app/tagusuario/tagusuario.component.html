@@ -1,7 +1,7 @@
 <div>
     <h2>
         <span jhiTranslate="trievegoApp.tag.home.title">Tags</span>
-        <button class="btn btn-primary float-right jh-create-entity create-tag" [routerLink]="['/', { outlets: { popup: ['tags-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-tag" [routerLink]="['/', { outlets: { popup: ['tagusuario-new'] } }]">
             <span class="fa fa-plus"></span>
             <span class="hidden-sm-down"  jhiTranslate="trievegoApp.tag.home.createLabel">
             Create new Tag
@@ -25,7 +25,7 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="tags">
+    <div class="table-responsive" *ngIf="tagusuario">
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
@@ -36,7 +36,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let tag of tags ;trackBy: trackId">
+            <tr *ngFor="let tag of tagusuario ;trackBy: trackId">
                 <!--td><a [routerLink]="['../tag', tag.id ]">{{tag.id}}</a></td-->
                 <td>{{tag.nombre}}</td>
                 <!--td><div *ngIf="tag.estado == true">Habilitado</div>
@@ -58,7 +58,7 @@
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button-->
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'tags/'+ tag.id + '/delete'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'tagusuario/'+ tag.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
@@ -71,7 +71,7 @@
             </tbody>
         </table>
     </div>
-    <div *ngIf="tags && tags.length">
+    <div *ngIf="tagusuario && tagusuario.length">
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>

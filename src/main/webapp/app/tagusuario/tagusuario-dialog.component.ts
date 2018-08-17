@@ -6,19 +6,19 @@ import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import { Tag } from './tags.model';
-import { TagsPopupService } from './tags-popup.service';
-import { TagsService } from './tags.service';
+import { Tag } from './tagusuario.model';
+import { TagusuarioPopupService } from './tagusuario-popup.service';
+import { TagusuarioService } from './tagusuario.service';
 import { Usuario, UsuarioService } from '../entities/usuario';
 import { Evento, EventoService } from '../entities/evento';
 
 @Component({
-    selector: 'jhi-tags-dialog',
-    templateUrl: './tags-dialog.component.html'
+    selector: 'jhi-tagusuario-dialog',
+    templateUrl: './tagusuario-dialog.component.html'
 })
-export class TagsDialogComponent implements OnInit {
+export class TagusuarioDialogComponent implements OnInit {
 
-    tags: Tag;
+    tagusuario: Tag;
     isSaving: boolean;
 
     usuarios: Usuario[];
@@ -28,7 +28,7 @@ export class TagsDialogComponent implements OnInit {
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
-        private tagsService: TagsService,
+        private tagusuarioService: TagusuarioService,
         private usuarioService: UsuarioService,
         private eventoService: EventoService,
         private eventManager: JhiEventManager
@@ -49,12 +49,12 @@ export class TagsDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
-        if (this.tags.id !== undefined) {
+        if (this.tagusuario.id !== undefined) {
             this.subscribeToSaveResponse(
-                this.tagsService.update(this.tags));
+                this.tagusuarioService.update(this.tagusuario));
         } else {
             this.subscribeToSaveResponse(
-                this.tagsService.create(this.tags));
+                this.tagusuarioService.create(this.tagusuario));
         }
     }
 
@@ -64,7 +64,7 @@ export class TagsDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: Tag) {
-        this.eventManager.broadcast({ name: 'tagsListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'tagusuarioListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -98,26 +98,26 @@ export class TagsDialogComponent implements OnInit {
 }
 
 @Component({
-    selector: 'jhi-tags-popup',
+    selector: 'jhi-tagusuario-popup',
     template: ''
 })
-export class TagsPopupComponent implements OnInit, OnDestroy {
+export class TagusuarioPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
     constructor(
         private route: ActivatedRoute,
-        private tagsPopupService: TagsPopupService
+        private tagusuarioPopupService: TagusuarioPopupService
     ) {}
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
             if ( params['id'] ) {
-                this.tagsPopupService
-                    .open(TagsDialogComponent as Component, params['id']);
+                this.tagusuarioPopupService
+                    .open(TagusuarioDialogComponent as Component, params['id']);
             } else {
-                this.tagsPopupService
-                    .open(TagsDialogComponent as Component);
+                this.tagusuarioPopupService
+                    .open(TagusuarioDialogComponent as Component);
             }
         });
     }

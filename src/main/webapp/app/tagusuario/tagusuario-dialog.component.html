@@ -7,15 +7,15 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" [hidden]="!tags.id">
+        <div class="form-group" [hidden]="!tagusuario.id">
             <label for="id" jhiTranslate="global.field.id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
-                   [(ngModel)]="tags.id" readonly />
+                   [(ngModel)]="tagusuario.id" readonly />
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="trievegoApp.tag.nombre" for="field_nombre">Nombre</label>
             <input type="text" class="form-control" name="nombre" id="field_nombre"
-                [(ngModel)]="tags.nombre" />
+                [(ngModel)]="tagusuario.nombre" />
         </div>
         <!--div class="form-group">
             <label class="form-control-label" jhiTranslate="trievegoApp.tag.estado" for="field_estado">Estado</label>

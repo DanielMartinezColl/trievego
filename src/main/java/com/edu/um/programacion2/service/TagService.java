@@ -1,6 +1,7 @@
 package com.edu.um.programacion2.service;
 
 import com.edu.um.programacion2.domain.Tag;
+import com.edu.um.programacion2.domain.Usuario;
 import com.edu.um.programacion2.repository.TagRepository;
 import com.edu.um.programacion2.repository.search.TagSearchRepository;
 import org.slf4j.Logger;
@@ -10,8 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import antlr.collections.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
+
+import java.util.Set;
 
 /**
  * Service Implementation for managing Tag.
@@ -92,4 +96,8 @@ public class TagService {
         Page<Tag> result = tagSearchRepository.search(queryStringQuery(query), pageable);
         return result;
     }
+
+    public Page<Tag> findAllByUsuariosContainsAndEstadoEquals(Pageable pageable, Usuario usuario, Boolean estado) {
+            return this.tagRepository.findAllByUsuariosContainsAndEstadoEquals(pageable, usuario, estado);
+    };
 }

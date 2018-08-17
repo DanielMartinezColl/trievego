@@ -2,7 +2,12 @@ package com.edu.um.programacion2.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.edu.um.programacion2.domain.Tag;
+import com.edu.um.programacion2.domain.User;
+import com.edu.um.programacion2.domain.Usuario;
+import com.edu.um.programacion2.repository.UserRepository;
+import com.edu.um.programacion2.security.SecurityUtils;
 import com.edu.um.programacion2.service.TagService;
+import com.edu.um.programacion2.service.UsuarioService;
 import com.edu.um.programacion2.web.rest.errors.BadRequestAlertException;
 import com.edu.um.programacion2.web.rest.util.HeaderUtil;
 import com.edu.um.programacion2.web.rest.util.PaginationUtil;
@@ -38,8 +43,14 @@ public class TagResource {
 
     private final TagService tagService;
 
-    public TagResource(TagService tagService) {
+    private final UsuarioService usuarioService;
+
+    private final UserRepository UserRepository;
+
+    public TagResource(TagService tagService, UsuarioService usuarioService,  UserRepository UserRepository) {
         this.tagService = tagService;
+        this.usuarioService = usuarioService;
+        this.UserRepository = UserRepository;
     }
 
     /**
@@ -98,6 +109,27 @@ public class TagResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tags");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+    /**
+     * GET  /tagusuario : get all the tagusuario.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of tagusuario in body
+     */
+    @GetMapping("/tagusuario")
+    @Timed
+    public ResponseEntity<List<Tag>> getAllTagusuario(Pageable pageable) {
+        log.debug("REST request to get a page of Tags");
+        Optional<String> currentUsuario = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = this.UserRepository.findOneByLogin(currentUsuario.get());
+        Usuario usuario = this.usuarioService.findOneByUser_Id(user.get().getId());
+
+        Page<Tag> page = tagService.findAllByUsuariosContainsAndEstadoEquals(pageable, usuario, Boolean.TRUE);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tagusuario");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
 
     /**
      * GET  /tags/:id : get the "id" tag.

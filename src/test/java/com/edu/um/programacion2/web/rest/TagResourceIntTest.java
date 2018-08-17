@@ -74,12 +74,12 @@ public class TagResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final TagResource tagResource = new TagResource(tagService);
-        this.restTagMockMvc = MockMvcBuilders.standaloneSetup(tagResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+        //final TagResource tagResource = new TagResource(tagService);
+        //this.restTagMockMvc = MockMvcBuilders.standaloneSetup(tagResource)
+        //    .setCustomArgumentResolvers(pageableArgumentResolver)
+        //    .setControllerAdvice(exceptionTranslator)
+        //    .setConversionService(createFormattingConversionService())
+        //    .setMessageConverters(jacksonMessageConverter).build();
     }
 
     /**

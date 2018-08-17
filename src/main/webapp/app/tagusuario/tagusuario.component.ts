@@ -4,18 +4,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import { Tag } from './tags.model';
-import { TagsService } from './tags.service';
+import { Tag } from './tagusuario.model';
+import { TagusuarioService } from './tagusuario.service';
 import { ITEMS_PER_PAGE, Principal } from '../shared';
 
 @Component({
-    selector: 'jhi-tags',
-    templateUrl: './tags.component.html'
+    selector: 'jhi-tagusuario',
+    templateUrl: './tagusuario.component.html'
 })
-export class TagsComponent implements OnInit, OnDestroy {
+export class TagusuarioComponent implements OnInit, OnDestroy {
 
 currentAccount: any;
-    tags: Tag[];
+    tagusuario: Tag[];
     error: any;
     success: any;
     eventSubscriber: Subscription;
@@ -31,7 +31,7 @@ currentAccount: any;
     reverse: any;
 
     constructor(
-        private tagsService: TagsService,
+        private tagusuarioService: TagusuarioService,
         private parseLinks: JhiParseLinks,
         private jhiAlertService: JhiAlertService,
         private principal: Principal,
@@ -52,7 +52,7 @@ currentAccount: any;
 
     loadAll() {
         if (this.currentSearch) {
-            this.tagsService.search({
+            this.tagusuarioService.search({
                 page: this.page - 1,
                 query: this.currentSearch,
                 size: this.itemsPerPage,
@@ -62,7 +62,7 @@ currentAccount: any;
                 );
             return;
         }
-        this.tagsService.query({
+        this.tagusuarioService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
             sort: this.sort()}).subscribe(
@@ -77,7 +77,7 @@ currentAccount: any;
         }
     }
     transition() {
-        this.router.navigate(['/tags'], {queryParams:
+        this.router.navigate(['/tagusuario'], {queryParams:
             {
                 page: this.page,
                 size: this.itemsPerPage,
@@ -91,7 +91,7 @@ currentAccount: any;
     clear() {
         this.page = 0;
         this.currentSearch = '';
-        this.router.navigate(['/tags', {
+        this.router.navigate(['/tagusuario', {
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
         }]);
@@ -103,7 +103,7 @@ currentAccount: any;
         }
         this.page = 0;
         this.currentSearch = query;
-        this.router.navigate(['/tags', {
+        this.router.navigate(['/tagusuario', {
             search: this.currentSearch,
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
@@ -115,7 +115,7 @@ currentAccount: any;
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
-        this.registerChangeInTags();
+        this.registerChangeInTagusuario();
     }
 
     ngOnDestroy() {
@@ -125,8 +125,8 @@ currentAccount: any;
     trackId(index: number, item: Tag) {
         return item.id;
     }
-    registerChangeInTags() {
-        this.eventSubscriber = this.eventManager.subscribe('tagsListModification', (response) => this.loadAll());
+    registerChangeInTagusuario() {
+        this.eventSubscriber = this.eventManager.subscribe('tagusuarioListModification', (response) => this.loadAll());
     }
 
     sort() {
@@ -142,7 +142,7 @@ currentAccount: any;
         this.totalItems = headers.get('X-Total-Count');
         this.queryCount = this.totalItems;
         // this.page = pagingParams.page;
-        this.tags = data;
+        this.tagusuario = data;
     }
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);

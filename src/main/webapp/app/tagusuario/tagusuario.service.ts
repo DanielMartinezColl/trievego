@@ -3,27 +3,27 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../app.constants';
 
-import { Tag } from './tags.model';
+import { Tag } from './tagusuario.model';
 import { createRequestOption } from '../shared';
 
 export type EntityResponseType = HttpResponse<Tag>;
 
 @Injectable()
-export class TagsService {
+export class TagusuarioService {
 
-    private resourceUrl =  SERVER_API_URL + 'api/tags';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/tags';
+    private resourceUrl =  SERVER_API_URL + 'api/tagusuario';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/tagusuario';
 
     constructor(private http: HttpClient) { }
 
-    create(tags: Tag): Observable<EntityResponseType> {
-        const copy = this.convert(tags);
+    create(tagusuario: Tag): Observable<EntityResponseType> {
+        const copy = this.convert(tagusuario);
         return this.http.post<Tag>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    update(tags: Tag): Observable<EntityResponseType> {
-        const copy = this.convert(tags);
+    update(tagusuario: Tag): Observable<EntityResponseType> {
+        const copy = this.convert(tagusuario);
         return this.http.put<Tag>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
@@ -66,16 +66,16 @@ export class TagsService {
     /**
      * Convert a returned JSON object to Tag.
      */
-    private convertItemFromServer(tags: Tag): Tag {
-        const copy: Tag = Object.assign({}, tags);
+    private convertItemFromServer(tagusuario: Tag): Tag {
+        const copy: Tag = Object.assign({}, tagusuario);
         return copy;
     }
 
     /**
      * Convert a Tag to a JSON which can be sent to the server.
      */
-    private convert(tags: Tag): Tag {
-        const copy: Tag = Object.assign({}, tags);
+    private convert(tagusuario: Tag): Tag {
+        const copy: Tag = Object.assign({}, tagusuario);
         return copy;
     }
 }
