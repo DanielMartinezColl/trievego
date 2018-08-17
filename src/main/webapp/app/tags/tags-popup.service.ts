@@ -2,19 +2,17 @@ import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
-import { DatePipe } from '@angular/common';
-import { Evento } from './evento.model';
-import { EventoService } from './evento.service';
+import { Tag } from './tags.model';
+import { TagsService } from './tags.service';
 
 @Injectable()
-export class EventoPopupService {
+export class TagsPopupService {
     private ngbModalRef: NgbModalRef;
 
     constructor(
-        private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
-        private eventoService: EventoService
+        private tagsService: TagsService
 
     ) {
         this.ngbModalRef = null;
@@ -28,27 +26,25 @@ export class EventoPopupService {
             }
 
             if (id) {
-                this.eventoService.find(id)
-                    .subscribe((eventoResponse: HttpResponse<Evento>) => {
-                        const evento: Evento = eventoResponse.body;
-                        evento.fechaHora = this.datePipe
-                            .transform(evento.fechaHora, 'yyyy-MM-ddTHH:mm:ss');
-                        this.ngbModalRef = this.eventoModalRef(component, evento);
+                this.tagsService.find(id)
+                    .subscribe((tagsResponse: HttpResponse<Tag>) => {
+                        const tags: Tag = tagsResponse.body;
+                        this.ngbModalRef = this.tagsModalRef(component, tags);
                         resolve(this.ngbModalRef);
                     });
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
-                    this.ngbModalRef = this.eventoModalRef(component, new Evento());
+                    this.ngbModalRef = this.tagsModalRef(component, new Tag());
                     resolve(this.ngbModalRef);
                 }, 0);
             }
         });
     }
 
-    eventoModalRef(component: Component, evento: Evento): NgbModalRef {
+    tagsModalRef(component: Component, tags: Tag): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
-        modalRef.componentInstance.evento = evento;
+        modalRef.componentInstance.tags = tags;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
             this.ngbModalRef = null;

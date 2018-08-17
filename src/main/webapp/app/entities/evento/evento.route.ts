@@ -36,7 +36,8 @@ export const eventoRoute: Routes = [
             pageTitle: 'trievegoApp.evento.home.title'
         },
         canActivate: [UserRouteAccessService]
-    }, {
+    },
+    {
         path: 'evento/:id',
         component: EventoDetailComponent,
         data: {

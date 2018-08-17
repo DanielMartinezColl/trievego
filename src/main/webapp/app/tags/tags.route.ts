@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Routes } from '@angular/router';
 import { JhiPaginationUtil } from 'ng-jhipster';
 
-import { UserRouteAccessService } from '../../shared';
-import { EventoComponent } from './evento.component';
-import { EventoDetailComponent } from './evento-detail.component';
-import { EventoPopupComponent } from './evento-dialog.component';
-import { EventoDeletePopupComponent } from './evento-delete-dialog.component';
+import { UserRouteAccessService } from '../shared';
+import { TagsComponent } from './tags.component';
+import { TagsPopupComponent } from './tags-dialog.component';
+import { TagsDeletePopupComponent } from './tags-delete-dialog.component';
 
 @Injectable()
-export class EventoResolvePagingParams implements Resolve<any> {
+export class TagsResolvePagingParams implements Resolve<any> {
 
     constructor(private paginationUtil: JhiPaginationUtil) {}
 
@@ -24,56 +23,48 @@ export class EventoResolvePagingParams implements Resolve<any> {
     }
 }
 
-export const eventoRoute: Routes = [
+export const tagsRoute: Routes = [
     {
-        path: 'evento',
-        component: EventoComponent,
+        path: 'tags',
+        component: TagsComponent,
         resolve: {
-            'pagingParams': EventoResolvePagingParams
+            'pagingParams': TagsResolvePagingParams
         },
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'trievegoApp.evento.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }, {
-        path: 'evento/:id',
-        component: EventoDetailComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'trievegoApp.evento.home.title'
+            pageTitle: 'trievegoApp.tags.home.title'
         },
         canActivate: [UserRouteAccessService]
     }
 ];
 
-export const eventoPopupRoute: Routes = [
+export const tagsPopupRoute: Routes = [
     {
-        path: 'evento-new',
-        component: EventoPopupComponent,
+        path: 'tags-new',
+        component: TagsPopupComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'trievegoApp.evento.home.title'
+            pageTitle: 'trievegoApp.tags.home.title'
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'
     },
     {
-        path: 'evento/:id/edit',
-        component: EventoPopupComponent,
+        path: 'tags/:id/edit',
+        component: TagsPopupComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'trievegoApp.evento.home.title'
+            pageTitle: 'trievegoApp.tags.home.title'
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'
     },
     {
-        path: 'evento/:id/delete',
-        component: EventoDeletePopupComponent,
+        path: 'tags/:id/delete',
+        component: TagsDeletePopupComponent,
         data: {
             authorities: ['ROLE_USER'],
-            pageTitle: 'trievegoApp.evento.home.title'
+            pageTitle: 'trievegoApp.tags.home.title'
         },
         canActivate: [UserRouteAccessService],
         outlet: 'popup'

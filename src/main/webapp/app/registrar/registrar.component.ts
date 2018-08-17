@@ -50,31 +50,23 @@ export class RegistrarComponent implements OnInit, AfterViewInit {
             this.error = null;
             this.errorUserExists = null;
             this.errorEmailExists = null;
-
-            const fechaNac = this.registerAccount.fechaNacimiento.year + "-" + this.registerAccount.fechaNacimiento.month + "-" +  this.registerAccount.fechaNacimiento.day;
-
             this.usuarioDTO = new UsuarioDTO(this.registerAccount.login,
             this.registerAccount.firstName,
             this.registerAccount.lastName,
             this.dateUtils.convertLocalDateToServer(this.registerAccount.fechaNacimiento),
             this.registerAccount.genero,
             this.registerAccount.email,
-            this.registerAccount.password)
-
+            this.registerAccount.password),
             this.registrarService.save(this.usuarioDTO).subscribe(
                 (res) => {
                    this.success = true;
-                    //console.log(res);
                 }
-            )
-
+            );
         }
     }
-
     openLogin() {
         this.modalRef = this.loginModalService.open();
     }
-
     private processError(response: HttpErrorResponse) {
         this.success = null;
         if (response.status === 400 && response.error.type === LOGIN_ALREADY_USED_TYPE) {

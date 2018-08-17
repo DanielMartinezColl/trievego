@@ -14,6 +14,7 @@ import { TrievegoSharedModule, UserRouteAccessService } from './shared';
 import { TrievegoAppRoutingModule} from './app-routing.module';
 import { TrievegoHomeModule } from './home/home.module';
 import { TrievegoAdminModule } from './admin/admin.module';
+import { TrievegoTagsModule } from './tags/tags.module';
 import { TrievegoAccountModule } from './account/account.module';
 import { TrievegoEntityModule } from './entities/entity.module';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
@@ -38,6 +39,7 @@ import {
         TrievegoSharedModule,
         TrievegoHomeModule,
         TrievegoAdminModule,
+        TrievegoTagsModule,
         TrievegoAccountModule,
         TrievegoRegistrarModule,
         TrievegoEntityModule,

@@ -4,20 +4,20 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { Evento } from './evento.model';
-import { EventoPopupService } from './evento-popup.service';
-import { EventoService } from './evento.service';
+import { Tag } from './tags.model';
+import { TagsPopupService } from './tags-popup.service';
+import { TagsService } from './tags.service';
 
 @Component({
-    selector: 'jhi-evento-delete-dialog',
-    templateUrl: './evento-delete-dialog.component.html'
+    selector: 'jhi-tags-delete-dialog',
+    templateUrl: './tags-delete-dialog.component.html'
 })
-export class EventoDeleteDialogComponent {
+export class TagsDeleteDialogComponent {
 
-    evento: Evento;
+    tags: Tag;
 
     constructor(
-        private eventoService: EventoService,
+        private tagsService: TagsService,
         public activeModal: NgbActiveModal,
         private eventManager: JhiEventManager
     ) {
@@ -28,10 +28,10 @@ export class EventoDeleteDialogComponent {
     }
 
     confirmDelete(id: number) {
-        this.eventoService.delete(id).subscribe((response) => {
+        this.tagsService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
-                name: 'eventoListModification',
-                content: 'Deleted an evento'
+                name: 'tagsListModification',
+                content: 'Deleted an tags'
             });
             this.activeModal.dismiss(true);
         });
@@ -39,22 +39,22 @@ export class EventoDeleteDialogComponent {
 }
 
 @Component({
-    selector: 'jhi-evento-delete-popup',
+    selector: 'jhi-tags-delete-popup',
     template: ''
 })
-export class EventoDeletePopupComponent implements OnInit, OnDestroy {
+export class TagsDeletePopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
     constructor(
         private route: ActivatedRoute,
-        private eventoPopupService: EventoPopupService
+        private tagsPopupService: TagsPopupService
     ) {}
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            this.eventoPopupService
-                .open(EventoDeleteDialogComponent as Component, params['id']);
+            this.tagsPopupService
+                .open(TagsDeleteDialogComponent as Component, params['id']);
         });
     }
 

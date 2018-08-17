@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
+import java.util.List;
+
 /**
  * Service Implementation for managing Ciudad.
  */
@@ -92,4 +94,11 @@ public class CiudadService {
         Page<Ciudad> result = ciudadSearchRepository.search(queryStringQuery(query), pageable);
         return result;
     }
+
+    //@Transactional(readOnly = true)
+    //public List<Ciudad> FindByProvincia(Long provinciaId) {
+
+    //    List<Ciudad> result = ciudadRepository.findByProvincia_ProvinciaId(provinciaId);
+    //    return result;
+    //}
 }

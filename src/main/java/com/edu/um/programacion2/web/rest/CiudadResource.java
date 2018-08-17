@@ -99,6 +99,14 @@ public class CiudadResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    //@GetMapping("/findByProvincia/{id}")
+    //@Timed
+    //public ResponseEntity<List<Ciudad>> findCiudadByProvincia(@PathVariable Long id) {
+        //log.debug("REST request to get a page of Ciudads");
+        //List<Ciudad> ciudades = ciudadService.FindByProvincia(id);
+        //return new ResponseEntity<List<Ciudad>>(ciudades, HttpStatus.OK);
+    //}
+
     /**
      * GET  /ciudads/:id : get the "id" ciudad.
      *

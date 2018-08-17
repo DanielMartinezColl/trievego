@@ -4,18 +4,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import { Evento } from './evento.model';
-import { EventoService } from './evento.service';
-import { ITEMS_PER_PAGE, Principal } from '../../shared';
+import { Tag } from './tags.model';
+import { TagsService } from './tags.service';
+import { ITEMS_PER_PAGE, Principal } from '../shared';
 
 @Component({
-    selector: 'jhi-evento',
-    templateUrl: './evento.component.html'
+    selector: 'jhi-tags',
+    templateUrl: './tags.component.html'
 })
-export class EventoComponent implements OnInit, OnDestroy {
+export class TagsComponent implements OnInit, OnDestroy {
 
 currentAccount: any;
-    eventos: Evento[];
+    tags: Tag[];
     error: any;
     success: any;
     eventSubscriber: Subscription;
@@ -31,7 +31,7 @@ currentAccount: any;
     reverse: any;
 
     constructor(
-        private eventoService: EventoService,
+        private tagsService: TagsService,
         private parseLinks: JhiParseLinks,
         private jhiAlertService: JhiAlertService,
         private principal: Principal,
@@ -52,21 +52,21 @@ currentAccount: any;
 
     loadAll() {
         if (this.currentSearch) {
-            this.eventoService.search({
+            this.tagsService.search({
                 page: this.page - 1,
                 query: this.currentSearch,
                 size: this.itemsPerPage,
                 sort: this.sort()}).subscribe(
-                    (res: HttpResponse<Evento[]>) => this.onSuccess(res.body, res.headers),
+                    (res: HttpResponse<Tag[]>) => this.onSuccess(res.body, res.headers),
                     (res: HttpErrorResponse) => this.onError(res.message)
                 );
             return;
         }
-        this.eventoService.query({
+        this.tagsService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
             sort: this.sort()}).subscribe(
-                (res: HttpResponse<Evento[]>) => this.onSuccess(res.body, res.headers),
+                (res: HttpResponse<Tag[]>) => this.onSuccess(res.body, res.headers),
                 (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
@@ -77,7 +77,7 @@ currentAccount: any;
         }
     }
     transition() {
-        this.router.navigate(['/evento'], {queryParams:
+        this.router.navigate(['/tags'], {queryParams:
             {
                 page: this.page,
                 size: this.itemsPerPage,
@@ -91,7 +91,7 @@ currentAccount: any;
     clear() {
         this.page = 0;
         this.currentSearch = '';
-        this.router.navigate(['/evento', {
+        this.router.navigate(['/tags', {
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
         }]);
@@ -103,7 +103,7 @@ currentAccount: any;
         }
         this.page = 0;
         this.currentSearch = query;
-        this.router.navigate(['/evento', {
+        this.router.navigate(['/tags', {
             search: this.currentSearch,
             page: this.page,
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
@@ -115,18 +115,18 @@ currentAccount: any;
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
-        this.registerChangeInEventos();
+        this.registerChangeInTags();
     }
 
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: Evento) {
+    trackId(index: number, item: Tag) {
         return item.id;
     }
-    registerChangeInEventos() {
-        this.eventSubscriber = this.eventManager.subscribe('eventoListModification', (response) => this.loadAll());
+    registerChangeInTags() {
+        this.eventSubscriber = this.eventManager.subscribe('tagsListModification', (response) => this.loadAll());
     }
 
     sort() {
@@ -142,7 +142,7 @@ currentAccount: any;
         this.totalItems = headers.get('X-Total-Count');
         this.queryCount = this.totalItems;
         // this.page = pagingParams.page;
-        this.eventos = data;
+        this.tags = data;
     }
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);

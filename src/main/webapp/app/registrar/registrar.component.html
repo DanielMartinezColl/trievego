@@ -29,7 +29,7 @@
             <form name="form" role="form" (ngSubmit)="register()" #registerForm="ngForm" *ngIf="!success">
                 <div class="form-group">
                     <label class="form-control-label" for="login" jhiTranslate="global.form.username">Username</label>
-                    <input type="text" class="form-control" [(ngModel)]="registerAccount.login" id="login" name="login" #login="ngModel" placeholder="Nonmbre usuario login"
+                    <input type="text" class="form-control" [(ngModel)]="registerAccount.login" id="login" name="login" #login="ngModel" placeholder="Nombre usuario login"
                             required minlength="1" maxlength="50" pattern="^[_'.@A-Za-z0-9-]*$">
                     <div *ngIf="login.dirty && login.invalid">
                         <small class="form-text text-danger" *ngIf="login.errors.required" jhiTranslate="register.messages.validate.login.required">

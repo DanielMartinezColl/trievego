@@ -9,7 +9,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { Evento } from './evento.model';
 import { EventoPopupService } from './evento-popup.service';
 import { EventoService } from './evento.service';
-import { Provincia, ProvinciaService } from '../provincia';
 import { Ciudad, CiudadService } from '../ciudad';
 import { Categoria, CategoriaService } from '../categoria';
 import { Usuario, UsuarioService } from '../usuario';
@@ -26,8 +25,6 @@ export class EventoDialogComponent implements OnInit {
 
     ciudads: Ciudad[];
 
-    provincias: Provincia[];
-
     categorias: Categoria[];
 
     usuarios: Usuario[];
@@ -39,7 +36,6 @@ export class EventoDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private eventoService: EventoService,
         private ciudadService: CiudadService,
-        private provinciaService: ProvinciaService,
         private categoriaService: CategoriaService,
         private usuarioService: UsuarioService,
         private tagService: TagService,
@@ -51,8 +47,6 @@ export class EventoDialogComponent implements OnInit {
         this.isSaving = false;
         this.ciudadService.query()
             .subscribe((res: HttpResponse<Ciudad[]>) => { this.ciudads = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.provinciaService.query()
-            .subscribe((res: HttpResponse<Provincia[]>) => { this.provincias = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.categoriaService.query()
             .subscribe((res: HttpResponse<Categoria[]>) => { this.categorias = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.usuarioService.query()
@@ -96,10 +90,6 @@ export class EventoDialogComponent implements OnInit {
     }
 
     trackCiudadById(index: number, item: Ciudad) {
-        return item.id;
-    }
-
-    trackProvinciaById(index: number, item: Provincia) {
         return item.id;
     }
 
