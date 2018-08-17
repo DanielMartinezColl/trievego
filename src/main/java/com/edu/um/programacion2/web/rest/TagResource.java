@@ -5,6 +5,7 @@ import com.edu.um.programacion2.domain.Tag;
 import com.edu.um.programacion2.domain.User;
 import com.edu.um.programacion2.domain.Usuario;
 import com.edu.um.programacion2.repository.UserRepository;
+import com.edu.um.programacion2.repository.UsuarioRepository;
 import com.edu.um.programacion2.security.SecurityUtils;
 import com.edu.um.programacion2.service.TagService;
 import com.edu.um.programacion2.service.UsuarioService;
@@ -23,9 +24,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -47,10 +50,13 @@ public class TagResource {
 
     private final UserRepository UserRepository;
 
-    public TagResource(TagService tagService, UsuarioService usuarioService,  UserRepository UserRepository) {
+    private final UsuarioRepository usuarioRepository;
+
+    public TagResource(TagService tagService, UsuarioService usuarioService,  UserRepository UserRepository, UsuarioRepository usuarioRepository) {
         this.tagService = tagService;
         this.usuarioService = usuarioService;
         this.UserRepository = UserRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     /**
@@ -72,6 +78,39 @@ public class TagResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
+
+/**
+     * POST  /tagusuariocrear : Create a new tag.
+     *
+     * @param tag the tag to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new tag, or with status 400 (Bad Request) if the tag has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PostMapping("/tagusuariocrear")
+    @Timed
+    public ResponseEntity<Tag> createTagusuario(@RequestBody Tag tag) throws URISyntaxException {
+        Optional<String> currentUsuario = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = this.UserRepository.findOneByLogin(currentUsuario.get());
+        Usuario usuario = this.usuarioService.findOneByUser_Id(user.get().getId());
+        Usuario usuarioEager = this.usuarioRepository.findOneWithEagerRelationships(usuario.getId());
+        log.debug("REST request to save Tag : {}", tag);
+        if (tag.getId() != null) {
+            throw new BadRequestAlertException("A new tag cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+
+        Set<Usuario> usuarios = new HashSet<Usuario>();
+        
+        usuarios.add(usuarioEager);
+
+        tag.setUsuarios(usuarios);
+        tag.setEstado(true);
+        Tag result = tagService.save(tag);
+        return ResponseEntity.created(new URI("/api/tagusuairo/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+
 
     /**
      * PUT  /tags : Updates an existing tag.

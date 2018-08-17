@@ -18,7 +18,7 @@ export class TagusuarioService {
 
     create(tagusuario: Tag): Observable<EntityResponseType> {
         const copy = this.convert(tagusuario);
-        return this.http.post<Tag>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.post<Tag>('api/tagusuariocrear', copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 

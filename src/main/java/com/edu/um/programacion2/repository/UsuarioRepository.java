@@ -20,5 +20,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Usuario findOneWithEagerRelationships(@Param("id") Long id);
 
     Usuario findOneByUser_Id(Long id);
-
 }
