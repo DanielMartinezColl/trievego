@@ -107,6 +107,8 @@ public class TagService {
      * @return the list of entities
      */
 
+     
+
     public Page<Tag> findAllByUsuariosContainsAndEstadoEquals(Pageable pageable, Usuario usuario, Boolean estado) {
             return this.tagRepository.findAllByUsuariosContainsAndEstadoEquals(pageable, usuario, estado);
     };

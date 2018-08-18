@@ -26,4 +26,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     Page<Tag> findAllByUsuariosContainsAndEstadoEquals(Pageable pageable, Usuario usuario, Boolean estado);
 
+    Tag findOneWithEagerByNombreLike(String nombre);
+
 }

@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.edu.um.programacion2.domain.Tag;
 import com.edu.um.programacion2.domain.User;
 import com.edu.um.programacion2.domain.Usuario;
+import com.edu.um.programacion2.repository.TagRepository;
 import com.edu.um.programacion2.repository.UserRepository;
 import com.edu.um.programacion2.repository.UsuarioRepository;
 import com.edu.um.programacion2.security.SecurityUtils;
@@ -46,17 +47,20 @@ public class TagResource {
 
     private final TagService tagService;
 
+    private final TagRepository tagRepository;
+
     private final UsuarioService usuarioService;
 
     private final UserRepository UserRepository;
 
     private final UsuarioRepository usuarioRepository;
 
-    public TagResource(TagService tagService, UsuarioService usuarioService,  UserRepository UserRepository, UsuarioRepository usuarioRepository) {
+    public TagResource(TagService tagService, UsuarioService usuarioService, TagRepository tagRepository,  UserRepository UserRepository, UsuarioRepository usuarioRepository) {
         this.tagService = tagService;
         this.usuarioService = usuarioService;
         this.UserRepository = UserRepository;
         this.usuarioRepository = usuarioRepository;
+        this.tagRepository = tagRepository;
     }
 
     /**
@@ -93,22 +97,45 @@ public class TagResource {
         Optional<User> user = this.UserRepository.findOneByLogin(currentUsuario.get());
         Usuario usuario = this.usuarioService.findOneByUser_Id(user.get().getId());
         Usuario usuarioEager = this.usuarioRepository.findOneWithEagerRelationships(usuario.getId());
-        log.debug("REST request to save Tag : {}", tag);
-        if (tag.getId() != null) {
-            throw new BadRequestAlertException("A new tag cannot already have an ID", ENTITY_NAME, "idexists");
+        
+        Tag tagbuscarLazy = this.tagRepository.findOneWithEagerByNombreLike(tag.getNombre());
+
+
+        Tag result = null;
+
+        if(tagbuscarLazy == null || tagbuscarLazy.getId() == null ){
+        
+            log.debug("REST request to save Tag : {}", tag);
+            if (tag.getId() != null) {
+                throw new BadRequestAlertException("A new tag cannot already have an ID", ENTITY_NAME, "idexists");
+            }
+
+            Set<Usuario> usuarios = new HashSet<Usuario>();
+        
+            usuarios.add(usuarioEager);
+
+            tag.setUsuarios(usuarios);
+            tag.setEstado(true);
+            result = tagService.save(tag);
         }
 
-        Set<Usuario> usuarios = new HashSet<Usuario>();
-        
-        usuarios.add(usuarioEager);
-
-        tag.setUsuarios(usuarios);
-        tag.setEstado(true);
-        Tag result = tagService.save(tag);
+        else{
+            Tag tagbuscar = this.tagRepository.findOneWithEagerRelationships(tagbuscarLazy.getId());
+            if(tagbuscar.isEstado()== true){
+                Set<Usuario> usuarios = tagbuscar.getUsuarios();
+                usuarios.add(usuarioEager);
+                tagbuscar.setUsuarios(usuarios);
+                result = tagService.save(tag);
+            } else {
+                throw new BadRequestAlertException("Ese tag está deshabilitado", ENTITY_NAME, "deshabilitado");
+            }
+        } 
         return ResponseEntity.created(new URI("/api/tagusuairo/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
-    }
+        
+           
+}
 
 
 
