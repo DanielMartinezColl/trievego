@@ -30,6 +30,7 @@ import {
     ActiveMenuDirective,
     ErrorComponent
 } from './layouts';
+import {TrievegoEventousuarioModule} from "./eventousuario/eventousuario.module";
 
 @NgModule({
     imports: [
@@ -43,6 +44,7 @@ import {
         TrievegoAccountModule,
         TrievegoRegistrarModule,
         TrievegoEntityModule,
+        TrievegoEventousuarioModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
