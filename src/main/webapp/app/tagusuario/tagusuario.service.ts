@@ -11,7 +11,7 @@ export type EntityResponseType = HttpResponse<Tag>;
 @Injectable()
 export class TagusuarioService {
 
-    private resourceUrl =  SERVER_API_URL + 'api/tagusuario';
+    private resourceUrl =  SERVER_API_URL + 'api/tags';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/tagusuario';
 
     constructor(private http: HttpClient) { }
@@ -35,12 +35,12 @@ export class TagusuarioService {
 
     query(req?: any): Observable<HttpResponse<Tag[]>> {
         const options = createRequestOption(req);
-        return this.http.get<Tag[]>(this.resourceUrl, { params: options, observe: 'response' })
+        return this.http.get<Tag[]>('api/tagusuario', { params: options, observe: 'response' })
             .map((res: HttpResponse<Tag[]>) => this.convertArrayResponse(res));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+        return this.http.delete<any>(`api/tagusuario/${id}`, { observe: 'response'});
     }
 
     search(req?: any): Observable<HttpResponse<Tag[]>> {
