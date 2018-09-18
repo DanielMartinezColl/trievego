@@ -93,47 +93,15 @@ public class TagResource {
     @PostMapping("/tagusuariocrear")
     @Timed
     public ResponseEntity<Tag> createTagusuario(@RequestBody Tag tag) throws URISyntaxException {
-        Optional<String> currentUsuario = SecurityUtils.getCurrentUserLogin();
-        Optional<User> user = this.UserRepository.findOneByLogin(currentUsuario.get());
-        Usuario usuario = this.usuarioService.findOneByUser_Id(user.get().getId());
-        Usuario usuarioEager = this.usuarioRepository.findOneWithEagerRelationships(usuario.getId());
         
-        Tag tagbuscarLazy = this.tagRepository.findOneWithEagerByNombreLike(tag.getNombre());
-
-
-        Tag result = null;
-
-        if(tagbuscarLazy == null || tagbuscarLazy.getId() == null ){
-        
-            log.debug("REST request to save Tag : {}", tag);
-            if (tag.getId() != null) {
-                throw new BadRequestAlertException("A new tag cannot already have an ID", ENTITY_NAME, "idexists");
-            }
-
-            Set<Usuario> usuarios = new HashSet<Usuario>();
-        
-            usuarios.add(usuarioEager);
-
-            tag.setUsuarios(usuarios);
-            tag.setEstado(true);
-            result = tagService.save(tag);
+        Tag result = tagService.guardartagusuario(tag);
+        if(result == null){
+         result=new Tag();
         }
-
-        else{
-            Tag tagbuscar = this.tagRepository.findOneWithEagerRelationships(tagbuscarLazy.getId());
-            if(tagbuscar.isEstado()== true){
-                Set<Usuario> usuarios = tagbuscar.getUsuarios();
-                usuarios.add(usuarioEager);
-                tagbuscar.setUsuarios(usuarios);
-                result = tagService.save(tag);
-            } else {
-                throw new BadRequestAlertException("Ese tag está deshabilitado", ENTITY_NAME, "deshabilitado");
-            }
-        } 
+    
         return ResponseEntity.created(new URI("/api/tagusuairo/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
-        
            
 }
 
@@ -225,6 +193,24 @@ public class TagResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
+
+
+    /**
+     * DELETE  /tagusuario/:id : delete the "id" tag.
+     *
+     * @param id the id of the tag to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @DeleteMapping("/tagusuario/{id}")
+    @Timed
+    public ResponseEntity<Void> deleteTagusuario(@PathVariable Long id) {
+        log.debug("REST request to delete Tag : {}", id);
+       
+        tagService.tagusuariodelete(id);
+
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
     /**
      * SEARCH  /_search/tags?query=:query : search for the tag corresponding
      * to the query.
@@ -236,6 +222,24 @@ public class TagResource {
     @GetMapping("/_search/tags")
     @Timed
     public ResponseEntity<List<Tag>> searchTags(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to search for a page of Tags for query {}", query);
+        Page<Tag> page = tagService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/tags");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
+    /**
+     * SEARCH  /_search/tagusuario?query=:query : search for the tag corresponding
+     * to the query.
+     *
+     * @param query the query of the tag search
+     * @param pageable the pagination information
+     * @return the result of the search
+     */
+    @GetMapping("/_search/tagusuario")
+    @Timed
+    public ResponseEntity<List<Tag>> searchTagusuario(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Tags for query {}", query);
         Page<Tag> page = tagService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/tags");
