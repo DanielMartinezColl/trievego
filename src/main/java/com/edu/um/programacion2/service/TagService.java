@@ -214,5 +214,25 @@ public class TagService {
     }
 
 
+    /**
+     * Search for the tag corresponding to usuario.
+     *
+     * @param query the query of the search
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public Page<Tag> searchTagusuario(String query, Pageable pageable, Boolean estado) {
+        Optional<String> currentUsuario = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = this.UserRepository.findOneByLogin(currentUsuario.get());
+        Usuario usuario = this.usuarioService.findOneByUser_Id(user.get().getId());
+        Usuario usuarioEager = this.usuarioRepository.findOneWithEagerRelationships(usuario.getId());
+
+        log.debug("Request to search for a page of Tags for query {}", query);
+        Page<Tag> result = tagRepository.findAllByUsuariosContainsAndEstadoEqualsAndNombreLike(pageable,  usuario, estado, query);
+        return result;
+    }
+
+
 
 }

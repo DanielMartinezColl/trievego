@@ -237,12 +237,32 @@ public class TagResource {
      * @param pageable the pagination information
      * @return the result of the search
      */
-    @GetMapping("/_search/tagusuario")
+    @GetMapping("/tagusuario/buscarnombre/")
     @Timed
-    public ResponseEntity<List<Tag>> searchTagusuario(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of Tags for query {}", query);
-        Page<Tag> page = tagService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/tags");
+    public ResponseEntity<List<Tag>> getTagusuarioNombre(@RequestParam String query, Pageable pageable) {
+        log.debug("REST request to get a page of Tags");
+
+        Optional<String> currentUsuario = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = this.UserRepository.findOneByLogin(currentUsuario.get());
+        Usuario usuario = this.usuarioService.findOneByUser_Id(user.get().getId());
+
+        Page<Tag> page = tagRepository.findAllByUsuariosContainsAndEstadoEquals(pageable, usuario, Boolean.TRUE);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tagusuario");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/tagusuario/buscartag/{nombre}")
+    @Timed
+    public ResponseEntity<List<Tag>> buscarTag(@PathVariable String nombre, Pageable pageable) {
+        log.debug("REST request to get a page of Tags with nombre");
+        Optional<String> currentUsuario = SecurityUtils.getCurrentUserLogin();
+        Optional<User> user = this.UserRepository.findOneByLogin(currentUsuario.get());
+        Usuario usuario = this.usuarioService.findOneByUser_Id(user.get().getId());
+
+        Page<Tag> page = tagRepository.findAllByUsuariosContainsAndEstadoEqualsAndNombreLike(pageable, usuario, Boolean.TRUE, nombre);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tagusuario");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

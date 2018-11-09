@@ -43,9 +43,15 @@ export class TagusuarioService {
         return this.http.delete<any>(`api/tagusuario/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<Tag[]>> {
+    getTagsUsuario(req?: any): Observable<HttpResponse<Tag[]>> {
         const options = createRequestOption(req);
-        return this.http.get<Tag[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
+        return this.http.get<Tag[]>(`api/tagusuario/buscarnombre/`, { params: options, observe: 'response' })
+            .map((res: HttpResponse<Tag[]>) => this.convertArrayResponse(res));
+    }
+
+    searchTag(query: any): Observable<HttpResponse<Tag[]>> {
+        const options = createRequestOption(query);
+        return this.http.get<Tag[]>(`api/tagusuario/buscartag/${query.nombre}`, { observe: 'response' })
             .map((res: HttpResponse<Tag[]>) => this.convertArrayResponse(res));
     }
 

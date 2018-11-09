@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiEventManager, JhiParseLinks, JhiAlertService} from 'ng-jhipster';
 
-import { Tag } from './tagusuario.model';
-import { TagusuarioService } from './tagusuario.service';
-import { ITEMS_PER_PAGE, Principal } from '../shared';
+import {Tag} from './tagusuario.model';
+import {TagusuarioService} from './tagusuario.service';
+import {ITEMS_PER_PAGE, Principal} from '../shared';
 
 @Component({
     selector: 'jhi-tagusuario',
@@ -14,7 +14,7 @@ import { ITEMS_PER_PAGE, Principal } from '../shared';
 })
 export class TagusuarioComponent implements OnInit, OnDestroy {
 
-currentAccount: any;
+    currentAccount: any;
     tagusuario: Tag[];
     error: any;
     success: any;
@@ -51,39 +51,32 @@ currentAccount: any;
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.tagusuarioService.search({
-                page: this.page - 1,
-                query: this.currentSearch,
-                size: this.itemsPerPage,
-                sort: this.sort()}).subscribe(
-                    (res: HttpResponse<Tag[]>) => this.onSuccess(res.body, res.headers),
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-        }
         this.tagusuarioService.query({
             page: this.page - 1,
             size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
-                (res: HttpResponse<Tag[]>) => this.onSuccess(res.body, res.headers),
-                (res: HttpErrorResponse) => this.onError(res.message)
+            sort: this.sort()
+        }).subscribe(
+            (res: HttpResponse<Tag[]>) => this.onSuccess(res.body, res.headers),
+            (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
+
     loadPage(page: number) {
         if (page !== this.previousPage) {
             this.previousPage = page;
             this.transition();
         }
     }
+
     transition() {
-        this.router.navigate(['/tagusuario'], {queryParams:
-            {
-                page: this.page,
-                size: this.itemsPerPage,
-                search: this.currentSearch,
-                sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-            }
+        this.router.navigate(['/tagusuario'], {
+            queryParams:
+                {
+                    page: this.page,
+                    size: this.itemsPerPage,
+                    search: this.currentSearch,
+                    sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
+                }
         });
         this.loadAll();
     }
@@ -97,19 +90,25 @@ currentAccount: any;
         }]);
         this.loadAll();
     }
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.page = 0;
-        this.currentSearch = query;
-        this.router.navigate(['/tagusuario', {
-            search: this.currentSearch,
-            page: this.page,
-            sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-        }]);
-        this.loadAll();
+
+    searchTagusuario(nombre: String) {
+
+        let paramsQuery = {
+            page: this.page - 1,
+            size: this.itemsPerPage,
+            sort: this.sort(),
+            nombre: nombre
+        };
+
+        this.tagusuarioService.searchTag(paramsQuery).subscribe(
+            (res) => {
+                this.tagusuario = res.body;
+            }
+        );
+
     }
+
+
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then((account) => {
@@ -125,6 +124,7 @@ currentAccount: any;
     trackId(index: number, item: Tag) {
         return item.id;
     }
+
     registerChangeInTagusuario() {
         this.eventSubscriber = this.eventManager.subscribe('tagusuarioListModification', (response) => this.loadAll());
     }
@@ -144,6 +144,7 @@ currentAccount: any;
         // this.page = pagingParams.page;
         this.tagusuario = data;
     }
+
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
     }
